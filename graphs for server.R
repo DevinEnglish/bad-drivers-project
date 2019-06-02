@@ -1,6 +1,8 @@
 library(dplyr)
 library(ggplot2)
 library(tidyr)
+# Website csv was collected from
+#https://cdan.nhtsa.gov/tsftables/tsfar.htm 
 
 #All csv files read in
 bad_driving <- read.csv("data/bad-drivers.csv", stringsAsFactors = FALSE)
