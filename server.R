@@ -19,11 +19,12 @@ severity <- read.csv("data/Crashes-by-severity.csv", stringsAsFactors = FALSE)
 time_of_day <- read.csv("data/crashes-time-of-day-2017.csv", stringsAsFactors = FALSE)
 driver_demographic <- read.csv("data/driver-demographic-2017.csv", stringsAsFactors = FALSE)
 victim_types <- read.csv("data/injurys-and-victim-type.csv", stringsAsFactors = FALSE)
-usa <- geojson_read( 
+states <- geojson_read(
   x = "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json"
   , what = "sp"
 )
-names <- usa$name[usa$name!="Puerto Rico"] #Removes Puerto Rico from list of state names since we don't have data for it
+#names <- states$name[states$name!="Puerto Rico"]
+names <- append(state.name,"District of Columbia",after=8)
 num_range <- function(data,div) {
   bins <- seq(min(data),max(data),length.out = div)
 }
@@ -40,23 +41,25 @@ shinyServer(function(input, output) {
     ) %>% lapply(htmltools::HTML)
     leaflet(states) %>%
       addProviderTiles("CartoDB.Positron") %>%
-      addPolygons(fillColor = ~pal(bad_driving[,2]),
-                  weight = 2,
-                  opacity = 1,
-                  color = "white",
-                  dashArray = "3",
-                  fillOpacity = 0.7,
-                  highlight = highlightOptions(
-                    weight = 5,
-                    color = "#666",
-                    dashArray = "",
-                    fillOpacity = 0.7,
-                    bringToFront = TRUE),
-                  label = labels,
-                  labelOptions = labelOptions(
-                    style = list("font-weight" = "normal", padding = "3px 8px"),
-                    textsize = "15px",
-                    direction = "auto")) %>%
+      addPolygons(
+        fillColor = ~pal(bad_driving[,2]),
+        weight = 2,
+        opacity = 1,
+        color = "white",
+        dashArray = "3",
+        fillOpacity = 0.7,
+        highlight = highlightOptions(
+          weight = 5,
+          color = "#666",
+          dashArray = "",
+          fillOpacity = 0.7,
+          bringToFront = TRUE),
+        label = labels,
+        labelOptions = labelOptions(
+          style = list("font-weight" = "normal", padding = "3px 8px"),
+          textsize = "15px",
+          direction = "auto")
+                  ) %>%
       setView(-98.5795, 39.8282, zoom=4)
 
   })
@@ -243,13 +246,15 @@ shinyServer(function(input, output) {
     state_accidents %>% dplyr::rename("Other/Unkown"=colnames(state_accidents)[7])
   })
   output$alcoholLevelsTable <- renderTable({
-    alcohol_levels
+    alcohol_levels %>% dplyr::rename("BAC = 0"=BAC_0,"0.01<BAC>0.07"=BAC_0.01_0.07,
+                                     "BAC>0.08"=BAC_over_0.08,"BAC>0.01"=BAC_over_0.01)
   })
   output$monthTable <- renderTable({
     month %>% dplyr::rename("Property Damage"=colnames(month)[4])
   })
   output$severityTable <- renderTable({
-    severity
+    severity %>% dplyr::rename("Percent fatal (%)"=percent.fatal,"Fatalities"=fatal,"Percent injuries (%)"=percent.injury,
+                               "Percent property damage (%)"=percent.property.damage)
   })
   output$timeOfDayTable <- renderTable({
     time_of_day %>% dplyr::rename("Time"=TOD)
