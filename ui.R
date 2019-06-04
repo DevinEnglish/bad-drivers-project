@@ -51,21 +51,55 @@ shinyUI(fluidPage(
     # Show a plot of the generated distribution
     mainPanel(
       tabsetPanel(
-        tabPanel("Interactive Map", h2("Number of drivers involved in fatal collisions (per billion miles)"),
+        tabPanel("Interactive Map", 
+                 #Sequence of interactive maps
+                 h2("Number of drivers involved in fatal collisions (per billion miles)"),
                  leafletOutput("map1"),
+                 div("As Shown in this map, Southern, Central, and Central-Northern states have the highest number of drivers
+                     involved in fatal collisions per 1 billion miles. As a reminder, this is just correlation so further investigation
+                     is necessary in order to establish a well-established conclusion"),
+                 
                  h2("Percentage of drivers who were speeding"),
                  leafletOutput("map2"),
+                 div("While many drivers were speeding at the time of the accident, only Pennsylvania had a percentage that was 50 percent or above. 
+                     Perhaps this suggests that most acts of incompetence that cause accidents are not speeding-related and that there are other signifiers
+                     to take into account when it comes to predicting what kinds of accidents to expect"),
+                 
                  h2("Percentage of drivers who were alcohol impaired"),
                  leafletOutput("map3"),
+                 div("On average, between 20 and 35 percent of fatal accidents were attributed to alcohol impairment in most states. However, States
+                     like Texas, South Carolina, Hawaii, Montana, Rhode Island and North Dakota had percentages that were in the high thirties or even
+                     low forties. "),
+                 
                  h2("Percentage of drivers who were NOT distracted"),
                  leafletOutput("map4"),
+                 div("Surprisingly, The vast majority of drivers at the time of accidents were not classified as distracted. Wisconsin and 
+                     Mississippi are exceptions as only 39 and 10 percent of drivers in accidents respectively were not classified as distracted. "),
+                 
                  h2("Percentage of drivers who had not been involved in previous accidents"),
                  leafletOutput("map5"),
+                 div("The majority of drivers involved in such accidents do not have a history of accidents in the past. However, the percentage
+                     of those who were not involved in previous accidents does vary by state. The East Coast seems to have noticeably lower percentages 
+                     of drivers who were not involved in previous accidents than other states. Maybe this could be due to higher population density leading
+                     to a higher concentrations of motor vehicles on the roads that is responsible for people being more likely to be involved in accidents in the past. "),
+                 
                  h2("Price of car insurance premiums"),
                  leafletOutput("map6"),
+                 div("Most of the North Eastern USA, Florida, and Louisiana have the highest car insurance premiums. 
+                     Overall, states in the south have higher insurance premiums than states in the north. The midwest is
+                     notable for having relatively low car insurance premiums in comparison to other states. Another interesting, 
+                     detail is that Washington and Montana are notable for having higher insurance premiums in comparison to \
+                     nearby states. "),
+                 
                  h2("Cost of losses incurred by insurance companies per insured driver"),
-                 leafletOutput("map7")
-                                  ),
+                 leafletOutput("map7"),
+                 div("The East coast and Southern states are shown to have the highest costs of losses incurred by insurance
+                     companies per insured drivers. This could be linkd to the number of drivers involved in fatal collisions
+                     per 1 billion miles per state. However, Montana, North Dakota, and South Dakota have some of the highest
+                     numbers of drivers involved in fatal collisions per 1 billion miles but still has some of the lowest costs
+                     of losses incurred by insurance. Further investigation would be necessary to find a better sense of correlation
+                     and causation. ")
+        ),
         tabPanel("Bad Driver Table",tableOutput("badDriverTable")),
         tabPanel("State Accidents Table", tableOutput("stateAccidentsTable")),        
         tabPanel("Alcohol Levels Table",
