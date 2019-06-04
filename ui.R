@@ -23,7 +23,7 @@ victim_types <- read.csv("data/injurys-and-victim-type.csv", stringsAsFactors = 
 shinyUI(fluidPage(
   navbarPage(theme = shinythemes::shinytheme("slate"),
              "Bad Drivers",
-             tabPanel("Home", 
+             tabPanel("Home",
                       fluidRow(column(7,offset = 3,titlePanel("Bad Drivers and Insurance statistics in the United States of America 2017"))),
                       p("On average 3,287 die from a car accident every day, that is a lot of lives lost. Bad driving is a big problem in the United states
                         taking the 3rd place spot on leading causes of death. While we have come a long way, increasing car safety through seatbelts and airbags,
@@ -34,7 +34,7 @@ shinyUI(fluidPage(
              #Introduction to our application
              tabPanel("State Data",
                       sidebarPanel(
-                             selectInput("mapview", label = h3("Choose what to display on the map"),
+                             selectInput("mapview", label = h3("Map Display"),# not connected to actual graphs!!
                                          choices = list("Number of drivers in collisions per billions of miles" = "map1",
                                                         "Percentage of drivers who were speeding" = "map2"
                                                         # "Percentage of drivers who were alcohol impaired" = 4,
@@ -95,12 +95,12 @@ shinyUI(fluidPage(
                  sidebarLayout(
                    sidebarPanel("Analysis here"
                    ),
-                   mainPanel(navbarPage("The Data", 
+                   mainPanel(navbarPage("The Data",
                                         tabPanel("Plot",
                                                  sidebarLayout(sidebarPanel(sliderInput("yearForAlcGraph", label = h3("Year"), min = 1988, #fix scaling to be in years
                                               max = 2017, value = 2000, animate = TRUE)),
                                               mainPanel(plotOutput("alcoholLevelsGraph")))
-                                              ), 
+                                              ),
                                               tabPanel("Data Table",mainPanel(tableOutput("alcoholLevelsTable"))),
                                         tabPanel("Effects of Driving Drunk", mainPanel("Information about Drunk Driving"))
                  ))
@@ -133,41 +133,62 @@ shinyUI(fluidPage(
                                                  tabPanel("Weekly Trends Table",
                                                           mainPanel(tableOutput("timeOfDayTable")))
                                       )
-                   
+
                  ))
         )
+        ),
+
+        tabPanel("Trends Through the Years",
+                 sidebarLayout(
+                   sidebarPanel("Analysis here"),
+                   mainPanel(navbarPage("The Data",
+                                        tabPanel("Accident Severity",
+                                                 sidebarLayout(
+                                                   sidebarPanel(radioButtons("severityAccidentType", label = h3("Type of Accident"),
+                                                                             choices = list("Fatal" = "Fatal", "Injury Only" = "Injury Only", "Property Damage" = "Property Damage"),
+                                                                             selected = "Fatal")
+                                                   ),
+                                                   mainPanel(plotOutput("severityGraph"))
+                                                 )
+                                          ),
+                                                 tabPanel("Severity Table",
+                                                          mainPanel(tableOutput("severityTable")))
+
+                                        ))
+                 )),
+
+         tabPanel("Accident Demographic",
+                 sidebarLayout(
+                   sidebarPanel(
+                     "Analysis here"
+                   ),
+                   mainPanel(navbarPage("The data",
+                                        tabPanel("Driver Demographic",
+                                                 sidebarLayout(
+                                                   sidebarPanel(radioButtons("age", label = h3("Age"),
+                                                                             choices = list("<16" = "<16", "16-20" = "16-20", "21-24" = "21-24", "25-34" = "25-34",
+                                                                                            "35-44" = "35-44", "45-54" = "45-54", "55-64" = "55-64", "65-74" = "65-74", ">75" = ">74"),
+                                                                             selected = "<16")
+                                                   ),
+                                                   mainPanel(plotOutput("demoGraph"))
+                                                 )
+
+                                        ),
+                                        tabPanel("Victim Demographic",
+                                                 mainPanel("graph goes here")
+                                                 ),
+                                        navbarMenu("Tables",
+                                                   tabPanel("Driver Demographic Table",
+                                                            mainPanel(tableOutput("driverDemographicTable"))
+                                                   ),
+                                                   tabPanel("Victim Demogaphic",
+                                                            mainPanel(tableOutput("victimTypeTable"))
+                                                   )
+                                        )
+                          )
+               )
         )
 
-  #       tabPanel("Severity Table", 
-  #                sidebarLayout(
-  #                  sidebarPanel(radioButtons("severityAccidentType", label = h3("Type of Accident"),
-  #                                            choices = list("Fatal" = "Fatal", "Injury Only" = "Injury Only", "Property Damage" = "Property Damage"), 
-  #                                            selected = "Fatal")
-  #                  ),
-  #                  mainPanel(plotOutput("severityGraph"),tableOutput("severityTable"))
-  #                            )
-  #                  ),        
-  #       tabPanel("Time Of Day Table", 
-  #                sidebarLayout(
-  #                  sidebarPanel(textInput("dayOfWeek", label = h3("Day of the Week"), placeholder = "Monday")
-  #                               ),
-  #                  mainPanel(plotOutput("TODGraph"),tableOutput("timeOfDayTable"))
-  #                )
-  #       ),
-  #       tabPanel("Driver Demographic Table", 
-  #                sidebarLayout(
-  #                  sidebarPanel(radioButtons("age", label = h3("Age"),
-  #                                            choices = list("<16" = "<16", "16-20" = "16-20", "21-24" = "21-24", "25-34" = "25-34",
-  #                                                           "35-44" = "35-44", "45-54" = "45-54", "55-64" = "55-64", "65-74" = "65-74", ">75" = ">74"), 
-  #                                            selected = "<16")
-  #                  ),
-  #                  mainPanel(plotOutput("demoGraph"), tableOutput("driverDemographicTable"))
-  #                )
-  #                ),        
-  #       tabPanel("Victim Types Table", tableOutput("victimTypeTable")),        
-  #       tabPanel("Commentary", textOutput("dataCommentary"))
-  #     )
-  #   )
-  # )
-  )
+      )
+    )
 ))
