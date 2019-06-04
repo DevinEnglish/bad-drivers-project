@@ -105,7 +105,7 @@ shinyUI(fluidPage(
                  sidebarLayout(
                    sidebarPanel(radioButtons("age", label = h3("Age"),
                                              choices = list("<16" = "<16", "16-20" = "16-20", "21-24" = "21-24", "25-34" = "25-34",
-                                                            "35-44" = "35-44", "45-54" = "45-54", "55-64" = "55-64", "65-74" = "65-74", ">75" = ">75"), 
+                                                            "35-44" = "35-44", "45-54" = "45-54", "55-64" = "55-64", "65-74" = "65-74", ">75" = ">74"), 
                                              selected = "<16")
                    ),
                    mainPanel(plotOutput("demoGraph"), tableOutput("driverDemographicTable"))
