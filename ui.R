@@ -10,6 +10,7 @@
 library(shiny)
 library(leaflet)
 library(htmltools)
+library(plotly)
 bad_driving <- read.csv("data/bad-drivers.csv", stringsAsFactors = FALSE)
 state_accidents <- read.csv("data/accidents-per-state-2017.csv", stringsAsFactors = FALSE)
 alcohol_levels <- read.csv("data/BAC-levels-of-drivers-in-accidents.csv", stringsAsFactors = FALSE)
@@ -21,6 +22,7 @@ victim_types <- read.csv("data/injurys-and-victim-type.csv", stringsAsFactors = 
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
+  div(img(src='banner.png'), align="center"),
   navbarPage(theme = shinythemes::shinytheme("slate"),
              "Bad Drivers",
              tabPanel("Home",
@@ -30,10 +32,13 @@ shinyUI(fluidPage(
                         and educating more of the population on the importance of safe driving habits, there is still more to be done. The information in this application
                         was gathered by the National Highway Traffic Safety Administration 2017 anual motor safety report. This application's aim is to educate insurance companies
                         and other services related to road safety, on trends to better implement their services, as well as provide information to the general public to be more
-                        aware of their own safety efforts.")),
+                        aware of their own safety efforts."),
+                       div(img(src='photo1.jpg'), align="center")
+              ),
+                        
              #Introduction to our application
              tabPanel("State Data",
-h2("Number of drivers involved in fatal collisions (per billion miles)"),
+                                               h2("Number of drivers involved in fatal collisions (per billion miles)"),
                                                leafletOutput("map1"),
                                                div("As Shown in this map, Southern, Central, and Central-Northern states have the highest number of drivers
                                                    involved in fatal collisions per 1 billion miles. As a reminder, this is just correlation so further investigation
@@ -91,7 +96,7 @@ h2("Number of drivers involved in fatal collisions (per billion miles)"),
                                                                                            accidents caused by those legally intoxicated have large numbers as well. Since 1988 the number of accidents caused by drunk driving
                                                                                            has gone down significantly as research and awareness of achohol's harm has increased. Services such as Uber and Lift have also helped to 
                                                                                            decrease the number of intoxiated people on the roads, by providing them a safe way to get home.")),
-                                              mainPanel(plotOutput("alcoholLevelsGraph"), p(" Getting behind the wheel of a vehicle after a night of brinking is
+                                              mainPanel(plotlyOutput("alcoholLevelsGraph"), p(" Getting behind the wheel of a vehicle after a night of brinking is
                                                         a crime. Driving under the influence (DUI) is defined as operating a vehicle with a blood alcohol content of 0.08% or 
                                                         above. A DUI is classified as a misdemeanor in all states, and punishment usually means up to six months in jail on a first offense, time may be increased by situation.
                                                         Even drinking a small amount of alcohol can be harmful. The effects of alcohol put you at a higher risk of accident
@@ -115,14 +120,14 @@ h2("Number of drivers involved in fatal collisions (per billion miles)"),
                                                                            choices = list("Fatal" = "Fatal", "Injury Only" = "Injury Only", "Property Damage" = "Property Damage"),
                                                                            selected = "Fatal")
                                                  ),
-                                                 mainPanel(plotOutput("byMonthGraph"))
+                                                 mainPanel(plotlyOutput("byMonthGraph"))
                                                )
                                       ),
                                       tabPanel("Weekly Trends",
                                                sidebarLayout(
                                                  sidebarPanel(textInput("dayOfWeek", label = h3("Day of the Week"), placeholder = "Monday")
                                                               ),
-                                                 mainPanel(plotOutput("TODGraph"))
+                                                 mainPanel(plotlyOutput("TODGraph"))
                                                  )
                                                ),
                                       navbarMenu("Tables",
@@ -143,7 +148,7 @@ h2("Number of drivers involved in fatal collisions (per billion miles)"),
                                                                              choices = list("Fatal" = "Fatal", "Injury Only" = "Injury Only", "Property Damage" = "Property Damage"),
                                                                              selected = "Fatal")
                                                    ),
-                                                   mainPanel(plotOutput("severityGraph"))
+                                                   mainPanel(plotlyOutput("severityGraph"))
                                                  )
                                           ),
                                                  tabPanel("Severity Table",
@@ -159,18 +164,18 @@ h2("Number of drivers involved in fatal collisions (per billion miles)"),
                                                                                             "35-44" = "35-44", "45-54" = "45-54", "55-64" = "55-64", "65-74" = "65-74", ">75" = ">74"),
                                                                              selected = "<16")
                                                    ),
-                                                   mainPanel(plotOutput("demoGraph"))
+                                                   mainPanel(plotlyOutput("demoGraph"))
                                                  )
 
                                         ),
                                         tabPanel("Victim Demographic",
                                                  sidebarLayout(
                                                    sidebarPanel(radioButtons("victimType", label = h3("Type of Transportation Victim Was Using"),
-                                                                             choices = list("Passenger Car"= "Passenger Car", "Light Truck"= "Light Truck",
+                                                                             choices = list("Passenger Car"= "Passenger Car", "Light Truck"= "Light Truck", 
                                                                                             "Large Truck"= "Large Truck", "Bus"= "Bus","Motorcycle"="Motorcycle",
                                                                                             "Pedestrian"="Pedestrian", "Cyclist"="Cyclist", "Total"= "Total"), selected = "Passenger Car")
                                                    ),
-                                                 mainPanel(plotOutput("victimDemo"))
+                                                 mainPanel(plotlyOutput("victimDemo"))
                                                  )),
                                         navbarMenu("Tables",
                                                    tabPanel("Driver Demographic Table",

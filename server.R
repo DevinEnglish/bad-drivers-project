@@ -15,6 +15,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(ggthemes)
+library(plotly)
 bad_driving <- read.csv("data/bad-drivers.csv", stringsAsFactors = FALSE)
 state_accidents <- read.csv("data/accidents-per-state-2017.csv", stringsAsFactors = FALSE)
 alcohol_levels <- read.csv("data/BAC-levels-of-drivers-in-accidents.csv", stringsAsFactors = FALSE)
@@ -267,33 +268,33 @@ shinyServer(function(input, output) {
       theme(plot.title = element_text(hjust = 0.5))# date changes with input
     print(alcohol_bargraph)
   })
-  output$alcoholLevelsGraph <- renderPlot({
-    Alcohol_content_plot()
+  output$alcoholLevelsGraph <- renderPlotly({
+    ggplotly(Alcohol_content_plot())
   })
   output$monthTable <- renderTable({
     month %>% dplyr::rename("Property Damage"=colnames(month)[4])
   })
   by_month_graph <- reactive ({
     if(input$byMonthAccidentType == "Fatal"){
-      accidentType <- month$Fatal
+      accidents <- month$Fatal
     }
     if(input$byMonthAccidentType == "Injury Only"){
-      accidentType <- month$Injury
+      accidents <- month$Injury
     }
     if(input$byMonthAccidentType == "Property Damage"){
-      accidentType <- month$property.damage
+      accidents <- month$property.damage
     }
-    month_order <- factor(month$Month, level = c('Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept',
+    Month <- factor(month$Month, level = c('Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept',
                                                  'Oct', 'Nov', 'Dec'))
-    month_bargraph <-ggplot(data= month, aes(x= month_order, y= accidentType)) + 
+    month_bargraph <-ggplot(data= month, aes(x= Month, y= accidents)) + 
       geom_bar(stat="identity", fill="tan1") +
       theme_economist()+
       labs(title = paste("Accidents (",input$byMonthAccidentType, ") by Month in 2017", sep=""), x = "Month", y = "Number of accidents") + # accident type changes
       theme(plot.title = element_text(hjust = 0.5))
     print(month_bargraph)
   })
-  output$byMonthGraph <- renderPlot({
-    by_month_graph()
+  output$byMonthGraph <- renderPlotly({
+    ggplotly(by_month_graph())
   })
   output$severityTable <- renderTable({
     severity %>% dplyr::rename("Percent fatal (%)"=percent.fatal,"Fatalities"=fatal,"Percent injuries (%)"=percent.injury,
@@ -301,15 +302,15 @@ shinyServer(function(input, output) {
   })
   severity_graph <- reactive({
     if(input$severityAccidentType == "Fatal"){
-      accidentType <- severity$fatal
+      accidents <- severity$fatal
     }
     if(input$severityAccidentType == "Injury Only"){
-      accidentType <- severity$injury
+      accidents <- severity$injury
     }
     if(input$severityAccidentType == "Property Damage"){
-      accidentType <- severity$property.damage
+      accidents <- severity$property.damage
     }
-    severity_line <- ggplot(data= severity, aes(x=year, y= accidentType, group=1)) +
+    severity_line <- ggplot(data= severity, aes(x=year, y= accidents, group=1)) +
       geom_line(color="steelblue4", size = 1.5)+
       geom_point(color = "tan1", size = 3.5) +
       theme_economist()+
@@ -317,15 +318,15 @@ shinyServer(function(input, output) {
       theme(plot.title = element_text(hjust = 0.5))
     print(severity_line)
   })
-  output$severityGraph <- renderPlot({
-    severity_graph()
+  output$severityGraph <- renderPlotly({
+    ggplotly(severity_graph())
   })
   output$timeOfDayTable <- renderTable({
     time_of_day %>% dplyr::rename("Time"=TOD)
   })
   TOD_graph <- reactive({
     if(input$dayOfWeek == "") {
-      day <- time_of_day$Monday
+      accidents <- time_of_day$Monday
       name <- paste("Monday")
     }
     if(input$dayOfWeek == "Monday") {
@@ -333,32 +334,32 @@ shinyServer(function(input, output) {
       name <- input$dayOfWeek
     }
     if(input$dayOfWeek == "Tuesday") {
-      day <- time_of_day$Tuesday
+      accidents <- time_of_day$Tuesday
       name <- input$dayOfWeek
     }
     if(input$dayOfWeek == "Wednesday") {
-      day <- time_of_day$Wednesday
+      accidents <- time_of_day$Wednesday
       name <- input$dayOfWeek
     }
     if(input$dayOfWeek == "Thursday") {
-      day <- time_of_day$Thursday
+      accidents <- time_of_day$Thursday
       name <- input$dayOfWeek
     }
     if(input$dayOfWeek == "Friday") {
-      day <- time_of_day$Friday
+      accidents <- time_of_day$Friday
       name <- input$dayOfWeek
     }
     if(input$dayOfWeek == "Saturday") {
-      day <- time_of_day$Saturday
+      accidents <- time_of_day$Saturday
       name <- input$dayOfWeek
     }
     if(input$dayOfWeek == "Sunday") {
-      day <- time_of_day$Sunday
+      accidents <- time_of_day$Sunday
       name <- input$dayOfWeek
     }
     time_of_day <- time_of_day[-(9:27),]
-    TOD_order <- factor(time_of_day$TOD, level = c('12-3AM','3-6AM','6-9AM','9AM-12PM','12-3PM','3-6PM',"6-9PM", '9PM-12AM')) 
-    TOD_line <- ggplot(data= time_of_day, aes(x= TOD_order, y= day, group=1)) +
+    TOD <- factor(time_of_day$TOD, level = c('12-3AM','3-6AM','6-9AM','9AM-12PM','12-3PM','3-6PM',"6-9PM", '9PM-12AM')) 
+    TOD_line <- ggplot(data= time_of_day, aes(x= TOD, y= accidents, group=1)) +
       geom_line(color="steelblue4", size = 1.5)+
       theme_economist()+
       geom_point(color = "tan1", size = 3.5) +
@@ -366,8 +367,8 @@ shinyServer(function(input, output) {
       theme(plot.title = element_text(hjust = 0.5))
     print(TOD_line)
   })
-  output$TODGraph <- renderPlot({
-    TOD_graph()
+  output$TODGraph <- renderPlotly({
+    ggplotly(TOD_graph())
   })
   output$driverDemographicTable <- renderTable({
     driver_demographic
@@ -383,8 +384,8 @@ shinyServer(function(input, output) {
       theme(plot.title = element_text(hjust = 0.5))
     print(age_bargraph)
   })
-  output$demoGraph <- renderPlot({
-    demo_graph()
+  output$demoGraph <- renderPlotly({
+    ggplotly(demo_graph())
   })
   output$victimTypeTable <- renderTable({
     victim_types %>% dplyr::rename("Passenger Cars"=colnames(victim_types)[2],"Light Trucks"=colnames(victim_types)[3],
@@ -423,7 +424,8 @@ shinyServer(function(input, output) {
     theme(plot.title = element_text(hjust = 0.5))
   print(victim_line)
   })
-  output$victimDemo <- renderPlot({
-    victim_demo()
+  output$victimDemo <- renderPlotly({
+    ggplotly(victim_demo())
   })
+  
 })
