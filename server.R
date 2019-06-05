@@ -302,9 +302,9 @@ shinyServer(function(input, output) {
     if(input$byMonthAccidentType == "Property Damage"){
       accidents <- month$property.damage
     }
-    Month <- factor(month$Month, level = c('Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept',
+    month_order <- factor(month$Month, level = c('Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept',
                                                  'Oct', 'Nov', 'Dec'))
-    month_bargraph <-ggplot(data= month, aes(x= Month, y= accidents)) + 
+    month_bargraph <-ggplot(data= month, aes(x= month_order, y= accidents)) + 
       geom_bar(stat="identity", fill="tan1") +
       theme_economist()+
       labs(title = paste("Accidents (",input$byMonthAccidentType, ") by Month in 2017", sep=""), x = "Month", y = "Number of accidents") + # accident type changes
@@ -379,8 +379,8 @@ shinyServer(function(input, output) {
       name <- input$dayOfWeek
     }
     time_of_day <- time_of_day[-(9:27),]
-    TOD <- factor(time_of_day$TOD, level = c('12-3AM','3-6AM','6-9AM','9AM-12PM','12-3PM','3-6PM',"6-9PM", '9PM-12AM')) 
-    TOD_line <- ggplot(data= time_of_day, aes(x= TOD, y= accidents, group=1)) +
+    TOD_order <- factor(time_of_day$TOD, level = c('12-3AM','3-6AM','6-9AM','9AM-12PM','12-3PM','3-6PM',"6-9PM", '9PM-12AM')) 
+    TOD_line <- ggplot(data= time_of_day, aes(x= TOD_order, y= accidents, group=1)) +
       geom_line(color="steelblue4", size = 1.5)+
       theme_economist()+
       geom_point(color = "tan1", size = 3.5) +
