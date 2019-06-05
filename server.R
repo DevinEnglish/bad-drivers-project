@@ -356,27 +356,34 @@ shinyServer(function(input, output) {
     }
     if(tolower(input$dayOfWeek) == "tuesday") {
       accidents <- time_of_day$Tuesday
-      name <- input$dayOfWeek
+      name <- paste("Tuesday")
+      #name <- input$dayOfWeek
     }
     if(tolower(input$dayOfWeek) == "wednesday") {
       accidents <- time_of_day$Wednesday
-      name <- input$dayOfWeek
+     # name <- input$dayOfWeek
+            name <- paste("Wednesday")
     }
     if(tolower(input$dayOfWeek) == "thursday") {
       accidents <- time_of_day$Thursday
-      name <- input$dayOfWeek
+      #name <- input$dayOfWeek
+                  name <- paste("Thursday")
+
     }
     if(tolower(input$dayOfWeek) == "friday") {
       accidents <- time_of_day$Friday
-      name <- input$dayOfWeek
+      #name <- input$dayOfWeek
+      name <- paste("Friday")
     }
     if(tolower(input$dayOfWeek) == "saturday") {
       accidents <- time_of_day$Saturday
-      name <- input$dayOfWeek
-    }
+      #name <- input$dayOfWeek
+      name <- paste("Saturday")
+}
     if(tolower(input$dayOfWeek) == "sunday") {
       accidents <- time_of_day$Sunday
-      name <- input$dayOfWeek
+      #name <- input$dayOfWeek
+      name <- paste("Sunday")
     }
     time_of_day <- time_of_day[-(9:27),]
     TOD_order <- factor(time_of_day$TOD, level = c('12-3AM','3-6AM','6-9AM','9AM-12PM','12-3PM','3-6PM',"6-9PM", '9PM-12AM')) 

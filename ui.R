@@ -28,14 +28,16 @@ shinyUI(fluidPage(
              
              #Introduction page
              tabPanel("Home",
-                      fluidRow(column(7,offset = 3,titlePanel("Bad Drivers and Insurance statistics in the United States of America 2017"))),
+                      fluidRow(column(7,offset = 3,
+                                      h1("Bad Drivers and Insurance statistics in the United States of America 2017", align="center")
+                                      )),
                       p("On average 3,287 die from a car accident every day, that is a lot of lives lost. Bad driving is a big problem in the United states
                         taking the 3rd place spot on leading causes of death. While we have come a long way, increasing car safety through seatbelts and airbags,
                         and educating more of the population on the importance of safe driving habits, there is still more to be done. The information in this application
                         was gathered by the National Highway Traffic Safety Administration 2017 anual motor safety report. This application's aim is to educate insurance companies
                         and other services related to road safety on trends to better implement their services, as well as provide information to the general public to be more
                         aware of their own safety efforts."),
-                       div(img(src='photo1.jpg'), align="center")
+                       div(img(src='photo1.jpg', width="1000px", height="500px"), align="center")
               ),
                         
              #Interactive maps
