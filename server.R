@@ -392,31 +392,32 @@ shinyServer(function(input, output) {
                                    "Large Trucks"=colnames(victim_types)[4])
   })
   victim_demo <- reactive({
-    if(input$victimType == "Passenger Car"){
-      vType <- victim_types$Passenger.Cars
+    inputData <- input$victimType
+    if(inputData == "Passenger Car"){
+      accidents <- victim_types$Passenger.Cars
     }
-    if(input$VictimType == "Light Truck"){
-      vType <- victim_types$Light.Trucks
+    if(inputData == "Light Truck"){
+      accidents <- victim_types$Light.Trucks
     }
-    if(input$victimType == "Large Truck"){
-      vType <- victim_types$Large.Trucks
+    if(inputData == "Large Truck"){
+      accidents <- victim_types$Large.Trucks
     }
-    if(input$victimType == "Bus"){
-      vType <- victim_types$Buses
+    if(inputData == "Bus"){
+      accidents <- victim_types$Buses
     }
-    if(input$victimType == "Motorcycle"){
-      vType <- victim_types$Motorcycles
+    if(inputData == "Motorcycle"){
+      accidents <- victim_types$Motorcycles
     }
-    if(input$victimType == "Pedestrian"){
-      vType <- victim_types$Pedestrian
+    if(inputData == "Pedestrian"){
+      accidents <- victim_types$Pedestrian
     }
-    if(input$victimType == "Cyclist"){
-      vType <- victim_types$Pedalcyclist
+    if(inputData == "Cyclist"){
+      accidents <- victim_types$Pedalcyclist
     }
-    if(input$victimType == "Total"){
-      vType <- victim_types$Total
+    if(inputData == "Total"){
+      accidents <- victim_types$Total
     }
-  victim_line <- ggplot(data= victim_types, aes(x= victim_types$year, y= vType)) +
+  victim_line <- ggplot(data= victim_types, aes(x= year, y= accidents)) +
   geom_line(color="steelblue4", size = 1.5)+
     geom_point(color = "tan1", size = 3.5) +
     theme_economist()+

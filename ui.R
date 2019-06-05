@@ -31,7 +31,7 @@ shinyUI(fluidPage(
                         taking the 3rd place spot on leading causes of death. While we have come a long way, increasing car safety through seatbelts and airbags,
                         and educating more of the population on the importance of safe driving habits, there is still more to be done. The information in this application
                         was gathered by the National Highway Traffic Safety Administration 2017 anual motor safety report. This application's aim is to educate insurance companies
-                        and other services related to road safety, on trends to better implement their services, as well as provide information to the general public to be more
+                        and other services related to road safety on trends to better implement their services, as well as provide information to the general public to be more
                         aware of their own safety efforts."),
                        div(img(src='photo1.jpg'), align="center")
               ),
@@ -42,31 +42,31 @@ shinyUI(fluidPage(
                                                leafletOutput("map1"),
                                                div("As Shown in this map, Southern, Central, and Central-Northern states have the highest number of drivers
                                                    involved in fatal collisions per 1 billion miles. As a reminder, this is just correlation so further investigation
-                                                   is necessary in order to establish a well-established conclusion"),
+                                                   is necessary in order to establish a well-established conclusion."),
 
                                                h2("Percentage of drivers who were speeding"),
                                                leafletOutput("map2"),
                                                div("While many drivers were speeding at the time of the accident, only Pennsylvania had a percentage that was 50 percent or above.
                                                    Perhaps this suggests that most acts of incompetence that cause accidents are not speeding-related and that there are other signifiers
-                                                   to take into account when it comes to predicting what kinds of accidents to expect"),
+                                                   to take into account when it comes to predicting what kinds of accidents to expect."),
 
                                                h2("Percentage of drivers who were alcohol impaired"),
                                                leafletOutput("map3"),
                                                div("On average, between 20 and 35 percent of fatal accidents were attributed to alcohol impairment in most states. However, States
                                                    like Texas, South Carolina, Hawaii, Montana, Rhode Island and North Dakota had percentages that were in the high thirties or even
-                                                   low forties. "),
+                                                   low forties."),
 
                                                h2("Percentage of drivers who were NOT distracted"),
                                                leafletOutput("map4"),
                                                div("Surprisingly, The vast majority of drivers at the time of accidents were not classified as distracted. Wisconsin and
-                                                   Mississippi are exceptions as only 39 and 10 percent of drivers in accidents respectively were not classified as distracted. "),
+                                                   Mississippi are exceptions as only 39 and 10 percent of drivers in accidents respectively were not classified as distracted."),
 
                                                h2("Percentage of drivers who had not been involved in previous accidents"),
                                                leafletOutput("map5"),
                                                div("The majority of drivers involved in such accidents do not have a history of accidents in the past. However, the percentage
                                                    of those who were not involved in previous accidents does vary by state. The East Coast seems to have noticeably lower percentages
                                                    of drivers who were not involved in previous accidents than other states. Maybe this could be due to higher population density leading
-                                                   to a higher concentrations of motor vehicles on the roads that is responsible for people being more likely to be involved in accidents in the past. "),
+                                                   to a higher concentrations of motor vehicles on the roads that is responsible for people being more likely to be involved in accidents in the past."),
 
                                                h2("Price of car insurance premiums"),
                                                leafletOutput("map6"),
@@ -83,7 +83,7 @@ shinyUI(fluidPage(
                                                    per 1 billion miles per state. However, Montana, North Dakota, and South Dakota have some of the highest
                                                    numbers of drivers involved in fatal collisions per 1 billion miles but still has some of the lowest costs
                                                    of losses incurred by insurance. Further investigation would be necessary to find a better sense of correlation
-                                                   and causation. ")
+                                                   and causation.")
                           ),
              tabPanel("Drunk Driving",
                    navbarPage("The Data",
@@ -155,7 +155,8 @@ shinyUI(fluidPage(
                                                                              accidents also experienced similar declines and raises except without the same plateauing phenomenon. However, for instances of property damage, relatively consistent
                                                                              numbers have been maintained between the mid 1990s and late 2000's. ")
                                                    ),
-                                                   mainPanel(plotlyOutput("severityGraph"))
+                                                   mainPanel(plotlyOutput("severityGraph"), p("Many inovative technologies have helped reduce the number of accidents on our roads. Some of those technologies are..."),p("Passenger restraints such as seat belts"),p("Airbags"),
+                                                             p("Crash avoidance equipment such as lights and reflectors"), p("Driver assistance systems such as Electronic Stability Control"), p("Safety glass"), p("Car services such as Uber help get intoxicated people off the road"))
                                                  )
                                           ),
                                                  tabPanel("Severity Table",
@@ -183,7 +184,7 @@ shinyUI(fluidPage(
                                                                                             "Large Truck"= "Large Truck", "Bus"= "Bus","Motorcycle"="Motorcycle",
                                                                                             "Pedestrian"="Pedestrian", "Cyclist"="Cyclist", "Total"= "Total"), selected = "Passenger Car"),
                                                                                             p("In 1997, the total number of vehiclees victimized in accidents peaked at 3.348 Million vehicles. Every year, the majority of vehicles victimized in accidents
-                                                                                            were Light Trucks. ")
+                                                                                            were Light Trucks.")
                                                    ),
                                                  mainPanel(plotlyOutput("victimDemo"))
                                                  )),
