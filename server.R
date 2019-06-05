@@ -390,40 +390,40 @@ shinyServer(function(input, output) {
     victim_types %>% dplyr::rename("Passenger Cars"=colnames(victim_types)[2],"Light Trucks"=colnames(victim_types)[3],
                                    "Large Trucks"=colnames(victim_types)[4])
   })
-  victim_demo <- reactive({
-    if(input$victimType == "Passenger Car"){
-      vType <- victim_types$Passenger.Cars
-    }
-    if(input$VictimType == "Light Truck"){
-      vType <- victim_types$Light.Trucks
-    }
-    if(input$victimType == "Large Truck"){
-      vType <- victim_types$Large.Trucks
-    }
-    if(input$victimType == "Bus"){
-      vType <- victim_types$Buses
-    }
-    if(input$victimType == "Motorcycle"){
-      vType <- victim_types$Motorcycles
-    }
-    if(input$victimType == "Pedestrian"){
-      vType <- victim_types$Pedestrian
-    }
-    if(input$victimType == "Cyclist"){
-      vType <- victim_types$Pedalcyclist
-    }
-    if(input$victimType == "Total"){
-      vType <- victim_types$Total
-    }
-  victim_line <- ggplot(data= victim_types, aes(x= victim_type$year, y= vType, group=1)) +
-  geom_line(color="steelblue4", size = 1.5)+
-    geom_point(color = "tan1", size = 3.5) +
-    theme_economist()+
-    labs(title = paste("Number of", input$victimType,"accidents from 1988-2017"), x = "Year", y = "Number of accidents") + # accident type changes
-    theme(plot.title = element_text(hjust = 0.5))
-  print(victim_line)
-  })
-  output$victimDemo <- renderPlot({
-    victim_demo()
-  })
+  # victim_demo <- reactive({
+  #   if(input$victimType == "Passenger Car"){
+  #     vType <- victim_types$Passenger.Cars
+  #   }
+  #   if(input$VictimType == "Light Truck"){
+  #     vType <- victim_types$Light.Trucks
+  #   }
+  #   if(input$victimType == "Large Truck"){
+  #     vType <- victim_types$Large.Trucks
+  #   }
+  #   if(input$victimType == "Bus"){
+  #     vType <- victim_types$Buses
+  #   }
+  #   if(input$victimType == "Motorcycle"){
+  #     vType <- victim_types$Motorcycles
+  #   }
+  #   if(input$victimType == "Pedestrian"){
+  #     vType <- victim_types$Pedestrian
+  #   }
+  #   if(input$victimType == "Cyclist"){
+  #     vType <- victim_types$Pedalcyclist
+  #   }
+  #   if(input$victimType == "Total"){
+  #     vType <- victim_types$Total
+  #   }
+  # victim_line <- ggplot(data= victim_types, aes(x= victim_type$year, y= vType, group=1)) +
+  # geom_line(color="steelblue4", size = 1.5)+
+  #   geom_point(color = "tan1", size = 3.5) +
+  #   theme_economist()+
+  #   labs(title = paste("Number of", input$victimType,"accidents from 1988-2017"), x = "Year", y = "Number of accidents") + # accident type changes
+  #   theme(plot.title = element_text(hjust = 0.5))
+  # print(victim_line)
+  # })
+  # output$victimDemo <- renderPlot({
+  #   victim_demo()
+  # })
 })
