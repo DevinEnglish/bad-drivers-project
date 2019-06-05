@@ -386,8 +386,8 @@ shinyServer(function(input, output) {
       name <- paste("Sunday")
     }
     time_of_day <- time_of_day[-(9:27),]
-    TOD_order <- factor(time_of_day$TOD, level = c('12-3AM','3-6AM','6-9AM','9AM-12PM','12-3PM','3-6PM',"6-9PM", '9PM-12AM')) 
-    TOD_line <- ggplot(data= time_of_day, aes(x= TOD_order, y= accidents, group=1)) +
+    time_frame <- factor(time_of_day$TOD, level = c('12-3AM','3-6AM','6-9AM','9AM-12PM','12-3PM','3-6PM',"6-9PM", '9PM-12AM')) 
+    TOD_line <- ggplot(data= time_of_day, aes(x= time_frame, y= accidents, group=1)) +
       geom_line(color="steelblue4", size = 1.5)+
       theme_economist()+
       geom_point(color = "tan1", size = 3.5) +
