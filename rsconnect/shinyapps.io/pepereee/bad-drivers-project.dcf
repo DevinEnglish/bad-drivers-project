@@ -1,0 +1,13 @@
+name: bad-drivers-project
+title: bad-drivers-project
+username:
+account: pepereee
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 966280
+bundleId: 2131585
+url: https://pepereee.shinyapps.io/bad-drivers-project/
+when: 1559714721.47656
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: data-reading.R|graphs for server.R|README.md|drunkmap/server.R|drunkmap/ui.R
