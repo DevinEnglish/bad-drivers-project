@@ -21,6 +21,7 @@ victim_types <- read.csv("data/injurys-and-victim-type.csv", stringsAsFactors = 
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
+  div(img(src='banner.jpg'), align="center"),
   navbarPage(theme = shinythemes::shinytheme("slate"),
              "Bad Drivers",
              tabPanel("Home",
@@ -30,10 +31,13 @@ shinyUI(fluidPage(
                         and educating more of the population on the importance of safe driving habits, there is still more to be done. The information in this application
                         was gathered by the National Highway Traffic Safety Administration 2017 anual motor safety report. This application's aim is to educate insurance companies
                         and other services related to road safety, on trends to better implement their services, as well as provide information to the general public to be more
-                        aware of their own safety efforts.")),
+                        aware of their own safety efforts."),
+                       div(img(src='mascot.jpg'), align="center")
+              ),
+                        
              #Introduction to our application
              tabPanel("State Data",
-h2("Number of drivers involved in fatal collisions (per billion miles)"),
+                                               h2("Number of drivers involved in fatal collisions (per billion miles)"),
                                                leafletOutput("map1"),
                                                div("As Shown in this map, Southern, Central, and Central-Northern states have the highest number of drivers
                                                    involved in fatal collisions per 1 billion miles. As a reminder, this is just correlation so further investigation
@@ -165,11 +169,11 @@ h2("Number of drivers involved in fatal collisions (per billion miles)"),
                                         ),
                                         tabPanel("Victim Demographic",
                                                  sidebarLayout(
-                                                   # sidebarPanel(radioButtons("victimType", label = h3("Type of Transportation Victim Was Using"),
-                                                   #                           choices = list("Passenger Car"= "Passenger Car", "Light Truck"= "Light Truck", 
-                                                   #                                          "Large Truck"= "Large Truck", "Bus"= "Bus","Motorcycle"="Motorcycle",
-                                                   #                                          "Pedestrian"="Pedestrian", "Cyclist"="Cyclist", "Total"= "Total"), selected = "Passenger Car")
-                                                   # ),
+                                                   sidebarPanel(radioButtons("victimType", label = h3("Type of Transportation Victim Was Using"),
+                                                                             choices = list("Passenger Car"= "Passenger Car", "Light Truck"= "Light Truck", 
+                                                                                            "Large Truck"= "Large Truck", "Bus"= "Bus","Motorcycle"="Motorcycle",
+                                                                                            "Pedestrian"="Pedestrian", "Cyclist"="Cyclist", "Total"= "Total"), selected = "Passenger Car")
+                                                   ),
                                                  mainPanel(plotOutput("victimDemo"))
                                                  )),
                                         navbarMenu("Tables",

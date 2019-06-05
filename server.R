@@ -12,13 +12,10 @@ library(leaflet)
 library(htmltools)
 library(geojsonio)
 library(dplyr)
-<<<<<<< HEAD
-=======
 library(tidyr)
 library(ggplot2)
 library(ggthemes)
 
->>>>>>> 5eb15c5e6865522ff0f6e3f9fc92e55b8f85fceb
 bad_driving <- read.csv("data/bad-drivers.csv", stringsAsFactors = FALSE)
 state_accidents <- read.csv("data/accidents-per-state-2017.csv", stringsAsFactors = FALSE)
 alcohol_levels <- read.csv("data/BAC-levels-of-drivers-in-accidents.csv", stringsAsFactors = FALSE)
