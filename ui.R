@@ -165,11 +165,11 @@ h2("Number of drivers involved in fatal collisions (per billion miles)"),
                                         ),
                                         tabPanel("Victim Demographic",
                                                  sidebarLayout(
-                                                   # sidebarPanel(radioButtons("victimType", label = h3("Type of Transportation Victim Was Using"),
-                                                   #                           choices = list("Passenger Car"= "Passenger Car", "Light Truck"= "Light Truck", 
-                                                   #                                          "Large Truck"= "Large Truck", "Bus"= "Bus","Motorcycle"="Motorcycle",
-                                                   #                                          "Pedestrian"="Pedestrian", "Cyclist"="Cyclist", "Total"= "Total"), selected = "Passenger Car")
-                                                   # ),
+                                                   sidebarPanel(radioButtons("victimType", label = h3("Type of Transportation Victim Was Using"),
+                                                                             choices = list("Passenger Car"= "Passenger Car", "Light Truck"= "Light Truck",
+                                                                                            "Large Truck"= "Large Truck", "Bus"= "Bus","Motorcycle"="Motorcycle",
+                                                                                            "Pedestrian"="Pedestrian", "Cyclist"="Cyclist", "Total"= "Total"), selected = "Passenger Car")
+                                                   ),
                                                  mainPanel(plotOutput("victimDemo"))
                                                  )),
                                         navbarMenu("Tables",

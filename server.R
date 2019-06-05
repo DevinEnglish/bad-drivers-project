@@ -12,13 +12,9 @@ library(leaflet)
 library(htmltools)
 library(geojsonio)
 library(dplyr)
-<<<<<<< HEAD
-=======
 library(tidyr)
 library(ggplot2)
 library(ggthemes)
-
->>>>>>> 5eb15c5e6865522ff0f6e3f9fc92e55b8f85fceb
 bad_driving <- read.csv("data/bad-drivers.csv", stringsAsFactors = FALSE)
 state_accidents <- read.csv("data/accidents-per-state-2017.csv", stringsAsFactors = FALSE)
 alcohol_levels <- read.csv("data/BAC-levels-of-drivers-in-accidents.csv", stringsAsFactors = FALSE)
@@ -267,7 +263,8 @@ shinyServer(function(input, output) {
       geom_bar(stat="identity", fill="tan1") +
       theme_economist()+
       labs(title = paste("Alcohol content of drivers involved in accidents in", input$yearForAlcGraph), y = "Number of accidents", x = "Alcohol level",
-           caption = "BAC = Blood Alcohol Content\n Legally impaired with BAC of 0.08 + in the United States") # date changes with input
+           caption = "BAC = Blood Alcohol Content\n Legally impaired with BAC of 0.08 + in the United States") +
+      theme(plot.title = element_text(hjust = 0.5))# date changes with input
     print(alcohol_bargraph)
   })
   output$alcoholLevelsGraph <- renderPlot({
@@ -418,7 +415,7 @@ shinyServer(function(input, output) {
     if(input$victimType == "Total"){
       vType <- victim_types$Total
     }
-  victim_line <- ggplot(data= victim_types, aes(x= victim_type$year, y= vType, group=1)) +
+  victim_line <- ggplot(data= victim_types, aes(x= victim_types$year, y= vType)) +
   geom_line(color="steelblue4", size = 1.5)+
     geom_point(color = "tan1", size = 3.5) +
     theme_economist()+
