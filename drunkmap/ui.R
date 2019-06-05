@@ -22,7 +22,6 @@ victim_types <- read.csv("data/injurys-and-victim-type.csv", stringsAsFactors = 
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
-  div(img(src='banner.png'), align="center"),
   navbarPage(theme = shinythemes::shinytheme("slate"),
              "Bad Drivers",
              tabPanel("Home",
@@ -32,13 +31,10 @@ shinyUI(fluidPage(
                         and educating more of the population on the importance of safe driving habits, there is still more to be done. The information in this application
                         was gathered by the National Highway Traffic Safety Administration 2017 anual motor safety report. This application's aim is to educate insurance companies
                         and other services related to road safety, on trends to better implement their services, as well as provide information to the general public to be more
-                        aware of their own safety efforts."),
-                       div(img(src='photo1.jpg'), align="center")
-              ),
-                        
+                        aware of their own safety efforts.")),
              #Introduction to our application
              tabPanel("State Data",
-                                               h2("Number of drivers involved in fatal collisions (per billion miles)"),
+h2("Number of drivers involved in fatal collisions (per billion miles)"),
                                                leafletOutput("map1"),
                                                div("As Shown in this map, Southern, Central, and Central-Northern states have the highest number of drivers
                                                    involved in fatal collisions per 1 billion miles. As a reminder, this is just correlation so further investigation
@@ -105,7 +101,9 @@ shinyUI(fluidPage(
                                                         p(" Slow reaction times: Drinking slows your response time which increases the likelihood of an accident."),
                                                         p(" Reduced coordination: Drinking affects your vision, and hand and foot coordination, all of which are very important when driving."),
                                                         p(" Decreased concentration: Alcohol greatly affects concentration, something very important when driving such as staying in your lane,
-                                                          paying attention to other cars and understanding traffic signs.")
+                                                          paying attention to other cars and understanding traffic signs."),
+                                                        h2(""),
+                                                        plotlyOutput("drunk_overall")
                                               )
                                               )
                                               ),
@@ -118,18 +116,14 @@ shinyUI(fluidPage(
                                                sidebarLayout(
                                                  sidebarPanel(radioButtons("byMonthAccidentType", label = h3("Type of Accident"),
                                                                            choices = list("Fatal" = "Fatal", "Injury Only" = "Injury Only", "Property Damage" = "Property Damage"),
-                                                                           selected = "Fatal"), p("Fatal accidents seem to decline when transitioning from Fall to winter and rising significantly from early winter to mid summer.
-                                                                           Injuries also appear to be more common during the spring, summer, and fall compared to winter months. Another interesting observation is that mid summer 
-                                                                           shows noticeably fewer instances of propoerty damage compared to winter, spring, and fall. ")
+                                                                           selected = "Fatal")
                                                  ),
                                                  mainPanel(plotlyOutput("byMonthGraph"))
                                                )
                                       ),
                                       tabPanel("Weekly Trends",
                                                sidebarLayout(
-                                                 sidebarPanel(textInput("dayOfWeek", label = h3("Day of the Week"), placeholder = "Monday"),
-                                                 p("The average number of accidents seems to rise from early moorning to 3-6 PM and declines shortly after. Perhaps this is due to rush hour leading
-                                                 to a higher concentration of cars on the road")
+                                                 sidebarPanel(textInput("dayOfWeek", label = h3("Day of the Week"), placeholder = "Monday")
                                                               ),
                                                  mainPanel(plotlyOutput("TODGraph"))
                                                  )
@@ -150,10 +144,7 @@ shinyUI(fluidPage(
                                                  sidebarLayout(
                                                    sidebarPanel(radioButtons("severityAccidentType", label = h3("Type of Accident"),
                                                                              choices = list("Fatal" = "Fatal", "Injury Only" = "Injury Only", "Property Damage" = "Property Damage"),
-                                                                             selected = "Fatal"),
-                                                                             p("Over the years, fatal injuries have decreased and/or plateaued. However, starting in 2010, the number of fatal accidents has begun to rise.  Injury-only
-                                                                             accidents also experienced similar declines and raises except without the same plateauing phenomenon. However, for instances of property damage, relatively consistent
-                                                                             numbers have been maintained between the mid 1990s and late 2000's. ")
+                                                                             selected = "Fatal")
                                                    ),
                                                    mainPanel(plotlyOutput("severityGraph"))
                                                  )
@@ -169,8 +160,7 @@ shinyUI(fluidPage(
                                                    sidebarPanel(radioButtons("age", label = h3("Age"),
                                                                              choices = list("<16" = "<16", "16-20" = "16-20", "21-24" = "21-24", "25-34" = "25-34",
                                                                                             "35-44" = "35-44", "45-54" = "45-54", "55-64" = "55-64", "65-74" = "65-74", ">75" = ">74"),
-                                                                             selected = "<16"),
-                                                                             p("In any given age group, males were more likely to be involved in car accidents than females. The age group that had the most number of accidents were males and females age 25-34")
+                                                                             selected = "<16")
                                                    ),
                                                    mainPanel(plotlyOutput("demoGraph"))
                                                  )
@@ -179,11 +169,9 @@ shinyUI(fluidPage(
                                         tabPanel("Victim Demographic",
                                                  sidebarLayout(
                                                    sidebarPanel(radioButtons("victimType", label = h3("Type of Transportation Victim Was Using"),
-                                                                             choices = list("Passenger Car"= "Passenger Car", "Light Truck"= "Light Truck", 
+                                                                             choices = list("Passenger Car"= "Passenger Car", "Light Truck"= "Light Truck",
                                                                                             "Large Truck"= "Large Truck", "Bus"= "Bus","Motorcycle"="Motorcycle",
-                                                                                            "Pedestrian"="Pedestrian", "Cyclist"="Cyclist", "Total"= "Total"), selected = "Passenger Car"),
-                                                                                            p("In 1997, the total number of vehiclees involved in accidents peaked at 3.348 Million vehicles. Every year, the majority of vehicles involed in accidents
-                                                                                            were Light Trucks. ")
+                                                                                            "Pedestrian"="Pedestrian", "Cyclist"="Cyclist", "Total"= "Total"), selected = "Passenger Car")
                                                    ),
                                                  mainPanel(plotlyOutput("victimDemo"))
                                                  )),
