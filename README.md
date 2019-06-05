@@ -1,2 +1,2 @@
 # bad-drivers-project
-Repo for INFO201 final project using data about bad drivers across the US.
+[here](https://devinenglish.shinyapps.io/bad-drivers-project/) is the link to our project! This SHINY application shows trends of car accidents in the US collected from the National Highway Traffic Safety Association. The aim of this application is to show trends throughout the years (1988-2017) and to show trends within the year 2017 in the hope to provide users with useful information about road safety. This application can answer the questions such as "What time of day is it safest to drive?" "Which month is it most dangerous to drive?" "Are males or females worse drivers?" and "Which states have the most accidents?"

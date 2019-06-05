@@ -1,0 +1,13 @@
+name: bad-drivers-project
+title: bad-drivers-project
+username:
+account: devinenglish
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 966305
+bundleId: 2131646
+url: https://devinenglish.shinyapps.io/bad-drivers-project/
+when: 1559716011.25933
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .RData|data-reading.R|graphs for server.R|README.md
