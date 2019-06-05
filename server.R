@@ -11,6 +11,7 @@ library(shiny)
 library(leaflet)
 library(htmltools)
 library(geojsonio)
+library(dplyr)
 bad_driving <- read.csv("data/bad-drivers.csv", stringsAsFactors = FALSE)
 state_accidents <- read.csv("data/accidents-per-state-2017.csv", stringsAsFactors = FALSE)
 alcohol_levels <- read.csv("data/BAC-levels-of-drivers-in-accidents.csv", stringsAsFactors = FALSE)
@@ -321,27 +322,35 @@ shinyServer(function(input, output) {
   TOD_graph <- reactive({
     if(input$dayOfWeek == "") {
       day <- time_of_day$Monday
+      name <- paste("Monday")
     }
     if(input$dayOfWeek == "Monday") {
       day <- time_of_day$Monday
+      name <- input$dayOfWeek
     }
     if(input$dayOfWeek == "Tuesday") {
       day <- time_of_day$Tuesday
+      name <- input$dayOfWeek
     }
     if(input$dayOfWeek == "Wednesday") {
       day <- time_of_day$Wednesday
+      name <- input$dayOfWeek
     }
     if(input$dayOfWeek == "Thursday") {
       day <- time_of_day$Thursday
+      name <- input$dayOfWeek
     }
     if(input$dayOfWeek == "Friday") {
       day <- time_of_day$Friday
+      name <- input$dayOfWeek
     }
     if(input$dayOfWeek == "Saturday") {
       day <- time_of_day$Saturday
+      name <- input$dayOfWeek
     }
     if(input$dayOfWeek == "Sunday") {
       day <- time_of_day$Sunday
+      name <- input$dayOfWeek
     }
     time_of_day <- time_of_day[-(9:27),]
     TOD_order <- factor(time_of_day$TOD, level = c('12-3AM','3-6AM','6-9AM','9AM-12PM','12-3PM','3-6PM',"6-9PM", '9PM-12AM')) 
@@ -349,7 +358,7 @@ shinyServer(function(input, output) {
       geom_line(color="steelblue4", size = 1.5)+
       theme_economist()+
       geom_point(color = "tan1", size = 3.5) +
-      labs(title = paste("Average Number of Accidents on", day, "in 2017"), x = "Time of Day", y = "Number of accidents") + # accident type changes
+      labs(title = paste("Average Number of Accidents on", name, "in 2017"), x = "Time of Day", y = "Number of accidents") + # accident type changes
       theme(plot.title = element_text(hjust = 0.5))
     print(TOD_line)
   })
@@ -377,10 +386,40 @@ shinyServer(function(input, output) {
     victim_types %>% dplyr::rename("Passenger Cars"=colnames(victim_types)[2],"Light Trucks"=colnames(victim_types)[3],
                                    "Large Trucks"=colnames(victim_types)[4])
   })
-  #Summary tab
-  output$dataCommentary <- renderText({
-    paste0("This tab will include our own commentary on the data. For now, we won't have that much available here since we have not done any thorough calculations or observations.")
+  victim_demo <- reactive({
+    if(input$victimType == "Passenger Car"){
+      vType <- victim_types$Passenger.Cars
+    }
+    if(input$VictimType == "Light Truck"){
+      vType <- victim_types$Light.Trucks
+    }
+    if(input$victimType == "Large Truck"){
+      vType <- victim_types$Large.Trucks
+    }
+    if(input$victimType == "Bus"){
+      vType <- victim_types$Buses
+    }
+    if(input$victimType == "Motorcycle"){
+      vType <- victim_types$Motorcycles
+    }
+    if(input$victimType == "Pedestrian"){
+      vType <- victim_types$Pedestrian
+    }
+    if(input$victimType == "Cyclist"){
+      vType <- victim_types$Pedalcyclist
+    }
+    if(input$victimType == "Total"){
+      vType <- victim_types$Total
+    }
+  victim_line <- ggplot(data= victim_types, aes(x= victim_type$year, y= vType, group=1)) +
+  geom_line(color="steelblue4", size = 1.5)+
+    geom_point(color = "tan1", size = 3.5) +
+    theme_economist()+
+    labs(title = paste("Number of", input$victimType,"accidents from 1988-2017"), x = "Year", y = "Number of accidents") + # accident type changes
+    theme(plot.title = element_text(hjust = 0.5))
+  print(victim_line)
   })
-  
-  
+  output$victimDemo <- renderPlot({
+    victim_demo()
+  })
 })

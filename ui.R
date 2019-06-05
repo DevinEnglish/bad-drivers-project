@@ -33,16 +33,7 @@ shinyUI(fluidPage(
                         aware of their own safety efforts.")),
              #Introduction to our application
              tabPanel("State Data",
-                      sidebarPanel(
-                             selectInput("mapview", label = h3("Map Display"),# not connected to actual graphs!!
-                                         choices = list("Number of drivers in collisions per billions of miles" = "map1",
-                                                        "Percentage of drivers who were speeding" = "map2"
-                                                        # "Percentage of drivers who were alcohol impaired" = 4,
-                                                        # "Percentage of drivers who were NOT distracted" = 5
-                                                        ),
-                                         selected = "map1")
-                          ),
-                      mainPanel(h2("Number of drivers involved in fatal collisions (per billion miles)"),
+h2("Number of drivers involved in fatal collisions (per billion miles)"),
                                                leafletOutput("map1"),
                                                div("As Shown in this map, Southern, Central, and Central-Northern states have the highest number of drivers
                                                    involved in fatal collisions per 1 billion miles. As a reminder, this is just correlation so further investigation
@@ -87,29 +78,37 @@ shinyUI(fluidPage(
                                                    per 1 billion miles per state. However, Montana, North Dakota, and South Dakota have some of the highest
                                                    numbers of drivers involved in fatal collisions per 1 billion miles but still has some of the lowest costs
                                                    of losses incurred by insurance. Further investigation would be necessary to find a better sense of correlation
-                                                   and causation. "))
+                                                   and causation. ")
                           ),
-             tabPanel("Bad Driver Table",tableOutput("badDriverTable")),
-             tabPanel("State Accidents Table", tableOutput("stateAccidentsTable")),
              tabPanel("Drunk Driving",
-                 sidebarLayout(
-                   sidebarPanel("Analysis here"
-                   ),
-                   mainPanel(navbarPage("The Data",
-                                        tabPanel("Plot",
-                                                 sidebarLayout(sidebarPanel(sliderInput("yearForAlcGraph", label = h3("Year"), min = 1988, #fix scaling to be in years
-                                              max = 2017, value = 2000, animate = TRUE)),
-                                              mainPanel(plotOutput("alcoholLevelsGraph")))
+                   navbarPage("The Data",
+                                        tabPanel("Drunk Driving",
+                                                 sidebarLayout(
+                                                   sidebarPanel(
+                                                     sliderInput("yearForAlcGraph", label = h3("Year"), min = 1988, #fix scaling to be in years
+                                              max = 2017, value = 2000, animate = TRUE), p("While many accidents happened when the driver had a BAC of 0, these accidents were likely caused
+                                                                                           by other distractions such as texting while driving or other distracted driving. While those accidents are a majority
+                                                                                           accidents caused by those legally intoxicated have large numbers as well. Since 1988 the number of accidents caused by drunk driving
+                                                                                           has gone down significantly as research and awareness of achohol's harm has increased. Services such as Uber and Lift have also helped to 
+                                                                                           decrease the number of intoxiated people on the roads, by providing them a safe way to get home.")),
+                                              mainPanel(plotOutput("alcoholLevelsGraph"), p(" Getting behind the wheel of a vehicle after a night of brinking is
+                                                        a crime. Driving under the influence (DUI) is defined as operating a vehicle with a blood alcohol content of 0.08% or 
+                                                        above. A DUI is classified as a misdemeanor in all states, and punishment usually means up to six months in jail on a first offense, time may be increased by situation.
+                                                        Even drinking a small amount of alcohol can be harmful. The effects of alcohol put you at a higher risk of accident
+                                                        or road injury. It takes a lot of ability to drive safely such as concentration and quick judgments
+                                                        both of which alcohol affects"),
+                                                        p(" Slow reaction times: Drinking slows your response time which increases the likelihood of an accident."),
+                                                        p(" Reduced coordination: Drinking affects your vision, and hand and foot coordination, all of which are very important when driving."),
+                                                        p(" Decreased concentration: Alcohol greatly affects concentration, something very important when driving such as staying in your lane,
+                                                          paying attention to other cars and understanding traffic signs.")
+                                              )
+                                              )
                                               ),
-                                              tabPanel("Data Table",mainPanel(tableOutput("alcoholLevelsTable"))),
-                                        tabPanel("Effects of Driving Drunk", mainPanel("Information about Drunk Driving"))
-                 ))
-                )
+                                              tabPanel("Drunk Driving Table",mainPanel(tableOutput("alcoholLevelsTable")))
+                 )
                 ),
         tabPanel("Trends in 2017",
-                 sidebarLayout(
-                   sidebarPanel("Analysis here"),
-                 mainPanel(navbarPage("The Data",
+                 navbarPage("The Data",
                                       tabPanel("Monthly Trends",
                                                sidebarLayout(
                                                  sidebarPanel(radioButtons("byMonthAccidentType", label = h3("Type of Accident"),
@@ -128,20 +127,16 @@ shinyUI(fluidPage(
                                                ),
                                       navbarMenu("Tables",
                                                  tabPanel("Monthly Trends Table",
-                                                          mainPanel(tableOutput("monthTable"))
+                                                          tableOutput("monthTable")
                                                  ),
                                                  tabPanel("Weekly Trends Table",
-                                                          mainPanel(tableOutput("timeOfDayTable")))
+                                                          tableOutput("timeOfDayTable"))
                                       )
-
-                 ))
         )
         ),
 
         tabPanel("Trends Through the Years",
-                 sidebarLayout(
-                   sidebarPanel("Analysis here"),
-                   mainPanel(navbarPage("The Data",
+                 navbarPage("The Data",
                                         tabPanel("Accident Severity",
                                                  sidebarLayout(
                                                    sidebarPanel(radioButtons("severityAccidentType", label = h3("Type of Accident"),
@@ -152,17 +147,11 @@ shinyUI(fluidPage(
                                                  )
                                           ),
                                                  tabPanel("Severity Table",
-                                                          mainPanel(tableOutput("severityTable")))
-
-                                        ))
+                                                          tableOutput("severityTable"))
                  )),
 
          tabPanel("Accident Demographic",
-                 sidebarLayout(
-                   sidebarPanel(
-                     "Analysis here"
-                   ),
-                   mainPanel(navbarPage("The data",
+                   navbarPage("The Data",
                                         tabPanel("Driver Demographic",
                                                  sidebarLayout(
                                                    sidebarPanel(radioButtons("age", label = h3("Age"),
@@ -175,20 +164,24 @@ shinyUI(fluidPage(
 
                                         ),
                                         tabPanel("Victim Demographic",
-                                                 mainPanel("graph goes here")
-                                                 ),
+                                                 sidebarLayout(
+                                                   # sidebarPanel(radioButtons("victimType", label = h3("Type of Transportation Victim Was Using"),
+                                                   #                           choices = list("Passenger Car"= "Passenger Car", "Light Truck"= "Light Truck", 
+                                                   #                                          "Large Truck"= "Large Truck", "Bus"= "Bus","Motorcycle"="Motorcycle",
+                                                   #                                          "Pedestrian"="Pedestrian", "Cyclist"="Cyclist", "Total"= "Total"), selected = "Passenger Car")
+                                                   # ),
+                                                 mainPanel(plotOutput("victimDemo"))
+                                                 )),
                                         navbarMenu("Tables",
                                                    tabPanel("Driver Demographic Table",
-                                                            mainPanel(tableOutput("driverDemographicTable"))
+                                                            tableOutput("driverDemographicTable")
                                                    ),
                                                    tabPanel("Victim Demogaphic",
-                                                            mainPanel(tableOutput("victimTypeTable"))
+                                                            tableOutput("victimTypeTable")
                                                    )
                                         )
                           )
-               )
-        )
 
       )
-    )
+  )
 ))
