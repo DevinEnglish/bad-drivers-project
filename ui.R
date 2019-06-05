@@ -25,6 +25,8 @@ shinyUI(fluidPage(
   div(img(src='banner.png'), align="center"),
   navbarPage(theme = shinythemes::shinytheme("slate"),
              "Bad Drivers",
+             
+             #Introduction page
              tabPanel("Home",
                       fluidRow(column(7,offset = 3,titlePanel("Bad Drivers and Insurance statistics in the United States of America 2017"))),
                       p("On average 3,287 die from a car accident every day, that is a lot of lives lost. Bad driving is a big problem in the United states
@@ -36,7 +38,7 @@ shinyUI(fluidPage(
                        div(img(src='photo1.jpg'), align="center")
               ),
                         
-             #Introduction to our application
+             #Interactive maps
              tabPanel("State Data",
                                                h2("Number of drivers involved in fatal collisions (per billion miles)"),
                                                leafletOutput("map1"),

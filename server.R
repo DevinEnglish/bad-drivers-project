@@ -1,12 +1,4 @@
-#
-# This is the server logic of a Shiny web application. You can run the 
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
-
+#Libraries
 library(shiny)
 library(leaflet)
 library(htmltools)
@@ -16,6 +8,8 @@ library(tidyr)
 library(ggplot2)
 library(ggthemes)
 library(plotly)
+
+#Plots
 bad_driving <- read.csv("data/bad-drivers.csv", stringsAsFactors = FALSE)
 state_accidents <- read.csv("data/accidents-per-state-2017.csv", stringsAsFactors = FALSE)
 alcohol_levels <- read.csv("data/BAC-levels-of-drivers-in-accidents.csv", stringsAsFactors = FALSE)
@@ -28,7 +22,7 @@ states <- geojson_read(
   x = "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json"
   , what = "sp"
 )
-#names <- states$name[states$name!="Puerto Rico"]
+
 names <- append(state.name,"District of Columbia",after=8)
 num_range <- function(data,div) {
   bins <- seq(min(data),max(data),length.out = div)
@@ -37,6 +31,9 @@ num_range <- function(data,div) {
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   
+  #Interactive maps
+  
+  #Drivers involved in fatal collisions (per billion miles)
   output$map1 <- renderLeaflet({
     pal <- colorBin("RdPu", domain = bad_driving[,2],
                     bins =num_range(bad_driving[,2],5))
@@ -68,6 +65,8 @@ shinyServer(function(input, output) {
       setView(-98.5795, 39.8282, zoom=4)
 
   })
+  
+  #Percentage of drivers who were speeding
   output$map2 <- renderLeaflet({
     h2("Does this show up?")
     pal <- colorBin("YlGn", domain = bad_driving[,3],
@@ -97,6 +96,7 @@ shinyServer(function(input, output) {
                     direction = "auto")) %>%
       setView(-98.5795, 39.8282, zoom=4)
   })
+  #Percentage of drivers who were alcohol impaired
   output$map3 <- renderLeaflet({
     
     pal <- colorBin("Blues", domain = bad_driving[,4],
@@ -126,6 +126,8 @@ shinyServer(function(input, output) {
                     direction = "auto")) %>%
       setView(-98.5795, 39.8282, zoom=4)
   })
+  
+  #Percentage of drivers who were NOT distracted
   output$map4 <- renderLeaflet({
     pal <- colorBin("Oranges", domain = bad_driving[,5],
                     bins =num_range(bad_driving[,5],6))
@@ -154,6 +156,8 @@ shinyServer(function(input, output) {
                     direction = "auto")) %>%
       setView(-98.5795, 39.8282, zoom=4)
   })
+  
+  #Percentage of drivers who had not been involved in previous accidents
   output$map5 <- renderLeaflet({
     pal <- colorBin("YlOrBr", domain = bad_driving[,6],
                     bins =num_range(bad_driving[,6],5))
@@ -182,6 +186,8 @@ shinyServer(function(input, output) {
                     direction = "auto")) %>%
       setView(-98.5795, 39.8282, zoom=4)
   })
+  
+  #Price of car insurance premiums
   output$map6 <- renderLeaflet({
     pal <- colorBin("Blues", domain = bad_driving[,7],
                     bins =num_range(bad_driving[,7],5))
@@ -210,6 +216,8 @@ shinyServer(function(input, output) {
                     direction = "auto")) %>%
       setView(-98.5795, 39.8282, zoom=4)
   })
+  
+  #Cost of losses incurred by insurance companies per insured driver
   output$map7 <- renderLeaflet({
     pal <- colorBin("BuGn", domain = bad_driving[,8],
                     bins =num_range(bad_driving[,8],5))
@@ -238,6 +246,8 @@ shinyServer(function(input, output) {
                     direction = "auto")) %>%
       setView(-98.5795, 39.8282, zoom=4)
   })
+  
+  #Table of types of bad drivers
   output$badDriverTable <- renderTable({
     bad_driving %>% dplyr::rename("Number of drivers involved in fatal collisions (per billion miles)"=colnames(bad_driving)[2],
                                   "Percentage of drivers who were speeding"=colnames(bad_driving)[3],
@@ -247,13 +257,19 @@ shinyServer(function(input, output) {
                                   "Price of car insurance premiums"=colnames(bad_driving)[7],
                                   "Cost of losses incurred by insurance companies per insured driver"=colnames(bad_driving)[8])
   })
+  
+  #Table of state accidents
   output$stateAccidentsTable <- renderTable({
     state_accidents %>% dplyr::rename("Other/Unkown"=colnames(state_accidents)[7])
   })
+  
+  #BAC levels
   output$alcoholLevelsTable <- renderTable({
     alcohol_levels %>% dplyr::rename("BAC = 0"=`BAC_0.00`,"0.01<BAC>0.07"=`BAC_0.01_0.07`,
                                      "BAC>0.08"=`BAC_OVER_0.08`,"BAC>0.01"= `BAC_over_0.01`)
   })
+  
+  #Reactive for examining BAC levels at the time of an accident
   Alcohol_content_plot <- reactive({
     alcohol_levels <- alcohol_levels %>% select(-c(BAC_over_0.01, Total))
     alcohol_levels <- gather(alcohol_levels, level, amount, 2:4)
@@ -274,6 +290,8 @@ shinyServer(function(input, output) {
   output$monthTable <- renderTable({
     month %>% dplyr::rename("Property Damage"=colnames(month)[4])
   })
+  
+  #Reactive for choosing the type of accident
   by_month_graph <- reactive ({
     if(input$byMonthAccidentType == "Fatal"){
       accidents <- month$Fatal
@@ -293,6 +311,8 @@ shinyServer(function(input, output) {
       theme(plot.title = element_text(hjust = 0.5))
     print(month_bargraph)
   })
+  
+  #Plots and tables for 
   output$byMonthGraph <- renderPlotly({
     ggplotly(by_month_graph())
   })
@@ -300,6 +320,8 @@ shinyServer(function(input, output) {
     severity %>% dplyr::rename("Percent fatal (%)"=percent.fatal,"Fatalities"=fatal,"Percent injuries (%)"=percent.injury,
                                "Percent property damage (%)"=percent.property.damage)
   })
+  
+  #Reactive graph for accident severity
   severity_graph <- reactive({
     if(input$severityAccidentType == "Fatal"){
       accidents <- severity$fatal
@@ -324,36 +346,35 @@ shinyServer(function(input, output) {
   output$timeOfDayTable <- renderTable({
     time_of_day %>% dplyr::rename("Time"=TOD)
   })
+  
+  #Choose which day of the week. Not case sensitive
   TOD_graph <- reactive({
-    if(input$dayOfWeek == "") {
+    #Default option
+    if(input$dayOfWeek == "" | tolower(input$dayOfWeek) == "monday") {
       accidents <- time_of_day$Monday
       name <- paste("Monday")
     }
-    if(input$dayOfWeek == "Monday") {
-      day <- time_of_day$Monday
-      name <- input$dayOfWeek
-    }
-    if(input$dayOfWeek == "Tuesday") {
+    if(tolower(input$dayOfWeek) == "tuesday") {
       accidents <- time_of_day$Tuesday
       name <- input$dayOfWeek
     }
-    if(input$dayOfWeek == "Wednesday") {
+    if(tolower(input$dayOfWeek) == "wednesday") {
       accidents <- time_of_day$Wednesday
       name <- input$dayOfWeek
     }
-    if(input$dayOfWeek == "Thursday") {
+    if(tolower(input$dayOfWeek) == "thursday") {
       accidents <- time_of_day$Thursday
       name <- input$dayOfWeek
     }
-    if(input$dayOfWeek == "Friday") {
+    if(tolower(input$dayOfWeek) == "friday") {
       accidents <- time_of_day$Friday
       name <- input$dayOfWeek
     }
-    if(input$dayOfWeek == "Saturday") {
+    if(tolower(input$dayOfWeek) == "saturday") {
       accidents <- time_of_day$Saturday
       name <- input$dayOfWeek
     }
-    if(input$dayOfWeek == "Sunday") {
+    if(tolower(input$dayOfWeek) == "sunday") {
       accidents <- time_of_day$Sunday
       name <- input$dayOfWeek
     }
@@ -367,30 +388,41 @@ shinyServer(function(input, output) {
       theme(plot.title = element_text(hjust = 0.5))
     print(TOD_line)
   })
+  
+  #Graph of time of day
   output$TODGraph <- renderPlotly({
     ggplotly(TOD_graph())
   })
+  
+  #table of driver demographics
   output$driverDemographicTable <- renderTable({
     driver_demographic
   })
+  
+  #Age-Sex accident demographic reactive plot
   demo_graph <- reactive({
     driver_demographic <- driver_demographic %>% filter(Age == input$age) # change in age
     driver_demographic <- gather(driver_demographic, sex, amount, 2:3)
     age_bargraph <-ggplot(data= driver_demographic, aes(x= sex, y= amount)) + # y changes with input
       geom_bar(stat="identity", fill="tan1") +
-      #expand_limits(y=c(0,35000))+
       theme_economist()+
       labs(title = paste("Male vs Females age", input$age), x = "Sex", y = "Number of accidents") + # accident type changes
       theme(plot.title = element_text(hjust = 0.5))
     print(age_bargraph)
   })
+  
+  #Output for Age-Sex accident demographic plot
   output$demoGraph <- renderPlotly({
     ggplotly(demo_graph())
   })
+  
+  #Victim Table
   output$victimTypeTable <- renderTable({
     victim_types %>% dplyr::rename("Passenger Cars"=colnames(victim_types)[2],"Light Trucks"=colnames(victim_types)[3],
                                    "Large Trucks"=colnames(victim_types)[4])
   })
+  
+  #Selects which type of the car the victim was using at the time of the accident and plots it on a line
   victim_demo <- reactive({
     inputData <- input$victimType
     if(inputData == "Passenger Car"){
@@ -425,6 +457,8 @@ shinyServer(function(input, output) {
     theme(plot.title = element_text(hjust = 0.5))
   print(victim_line)
   })
+  
+  #Output for victim line
   output$victimDemo <- renderPlotly({
     ggplotly(victim_demo())
   })
