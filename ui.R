@@ -182,7 +182,7 @@ shinyUI(fluidPage(
                                                                              choices = list("Passenger Car"= "Passenger Car", "Light Truck"= "Light Truck", 
                                                                                             "Large Truck"= "Large Truck", "Bus"= "Bus","Motorcycle"="Motorcycle",
                                                                                             "Pedestrian"="Pedestrian", "Cyclist"="Cyclist", "Total"= "Total"), selected = "Passenger Car"),
-                                                                                            p("In 1997, the total number of vehiclees involved in accidents peaked at 3.348 Million vehicles. Every year, the majority of vehicles involed in accidents
+                                                                                            p("In 1997, the total number of vehiclees victimized in accidents peaked at 3.348 Million vehicles. Every year, the majority of vehicles victimized in accidents
                                                                                             were Light Trucks. ")
                                                    ),
                                                  mainPanel(plotlyOutput("victimDemo"))
