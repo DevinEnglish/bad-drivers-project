@@ -117,14 +117,18 @@ shinyUI(fluidPage(
                                                sidebarLayout(
                                                  sidebarPanel(radioButtons("byMonthAccidentType", label = h3("Type of Accident"),
                                                                            choices = list("Fatal" = "Fatal", "Injury Only" = "Injury Only", "Property Damage" = "Property Damage"),
-                                                                           selected = "Fatal")
+                                                                           selected = "Fatal"), p("Fatal accidents seem to decline when transitioning from Fall to winter and rising significantly from early winter to mid summer.
+                                                                           Injuries also appear to be more common during the spring, summer, and fall compared to winter months. Another interesting observation is that mid summer 
+                                                                           shows noticeably fewer instances of propoerty damage compared to winter, spring, and fall. ")
                                                  ),
                                                  mainPanel(plotOutput("byMonthGraph"))
                                                )
                                       ),
                                       tabPanel("Weekly Trends",
                                                sidebarLayout(
-                                                 sidebarPanel(textInput("dayOfWeek", label = h3("Day of the Week"), placeholder = "Monday")
+                                                 sidebarPanel(textInput("dayOfWeek", label = h3("Day of the Week"), placeholder = "Monday"),
+                                                 p("The average number of accidents seems to rise from early moorning to 3-6 PM and declines shortly after. Perhaps this is due to rush hour leading
+                                                 to a higher concentration of cars on the road")
                                                               ),
                                                  mainPanel(plotOutput("TODGraph"))
                                                  )
@@ -145,7 +149,10 @@ shinyUI(fluidPage(
                                                  sidebarLayout(
                                                    sidebarPanel(radioButtons("severityAccidentType", label = h3("Type of Accident"),
                                                                              choices = list("Fatal" = "Fatal", "Injury Only" = "Injury Only", "Property Damage" = "Property Damage"),
-                                                                             selected = "Fatal")
+                                                                             selected = "Fatal"),
+                                                                             p("Over the years, fatal injuries have decreased and/or plateaued. However, starting in 2010, the number of fatal accidents has begun to rise.  Injury-only
+                                                                             accidents also experienced similar declines and raises except without the same plateauing phenomenon. However, for instances of property damage, relatively consistent
+                                                                             numbers have been maintained between the mid 1990s and late 2000's. ")
                                                    ),
                                                    mainPanel(plotOutput("severityGraph"))
                                                  )
@@ -161,7 +168,8 @@ shinyUI(fluidPage(
                                                    sidebarPanel(radioButtons("age", label = h3("Age"),
                                                                              choices = list("<16" = "<16", "16-20" = "16-20", "21-24" = "21-24", "25-34" = "25-34",
                                                                                             "35-44" = "35-44", "45-54" = "45-54", "55-64" = "55-64", "65-74" = "65-74", ">75" = ">74"),
-                                                                             selected = "<16")
+                                                                             selected = "<16"),
+                                                                             p("In any given age group, males were more likely to be involved in car accidents than females. The age group that had the most number of accidents were males and females age 25-34")
                                                    ),
                                                    mainPanel(plotOutput("demoGraph"))
                                                  )
@@ -172,7 +180,9 @@ shinyUI(fluidPage(
                                                    sidebarPanel(radioButtons("victimType", label = h3("Type of Transportation Victim Was Using"),
                                                                              choices = list("Passenger Car"= "Passenger Car", "Light Truck"= "Light Truck", 
                                                                                             "Large Truck"= "Large Truck", "Bus"= "Bus","Motorcycle"="Motorcycle",
-                                                                                            "Pedestrian"="Pedestrian", "Cyclist"="Cyclist", "Total"= "Total"), selected = "Passenger Car")
+                                                                                            "Pedestrian"="Pedestrian", "Cyclist"="Cyclist", "Total"= "Total"), selected = "Passenger Car"),
+                                                                                            p("In 1997, the total number of vehiclees involved in accidents peaked at 3.348 Million vehicles. Every year, the majority of vehicles involed in accidents
+                                                                                            were Light Trucks. ")
                                                    ),
                                                  mainPanel(plotOutput("victimDemo"))
                                                  )),
