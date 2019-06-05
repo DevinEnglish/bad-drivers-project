@@ -62,7 +62,7 @@ shinyServer(function(input, output) {
           textsize = "15px",
           direction = "auto")
                   ) %>%
-      setView(-98.5795, 39.8282, zoom=4)
+      setView(-115, 45.8282, zoom=3.25)
 
   })
   
@@ -94,7 +94,7 @@ shinyServer(function(input, output) {
                     style = list("font-weight" = "normal", padding = "3px 8px"),
                     textsize = "15px",
                     direction = "auto")) %>%
-      setView(-98.5795, 39.8282, zoom=4)
+      setView(-115, 45.8282, zoom=3)
   })
   #Percentage of drivers who were alcohol impaired
   output$map3 <- renderLeaflet({
@@ -124,7 +124,7 @@ shinyServer(function(input, output) {
                     style = list("font-weight" = "normal", padding = "3px 8px"),
                     textsize = "15px",
                     direction = "auto")) %>%
-      setView(-98.5795, 39.8282, zoom=4)
+      setView(-115, 45.8282, zoom=3)
   })
   
   #Percentage of drivers who were NOT distracted
@@ -154,7 +154,8 @@ shinyServer(function(input, output) {
                     style = list("font-weight" = "normal", padding = "3px 8px"),
                     textsize = "15px",
                     direction = "auto")) %>%
-      setView(-98.5795, 39.8282, zoom=4)
+      setView(-115, 45.8282, zoom=3.25)
+    
   })
   
   #Percentage of drivers who had not been involved in previous accidents
@@ -184,7 +185,8 @@ shinyServer(function(input, output) {
                     style = list("font-weight" = "normal", padding = "3px 8px"),
                     textsize = "15px",
                     direction = "auto")) %>%
-      setView(-98.5795, 39.8282, zoom=4)
+      setView(-115, 45.8282, zoom=3.25)
+    
   })
   
   #Price of car insurance premiums
@@ -214,7 +216,7 @@ shinyServer(function(input, output) {
                     style = list("font-weight" = "normal", padding = "3px 8px"),
                     textsize = "15px",
                     direction = "auto")) %>%
-      setView(-98.5795, 39.8282, zoom=4)
+      setView(-115, 45.8282, zoom=3.25)
   })
   
   #Cost of losses incurred by insurance companies per insured driver
@@ -222,7 +224,7 @@ shinyServer(function(input, output) {
     pal <- colorBin("BuGn", domain = bad_driving[,8],
                     bins =num_range(bad_driving[,8],5))
     labels <- sprintf(
-      "<strong>%s</strong><br/>%g losses",
+      "<strong>%s</strong><br/>%g dollars",
       names, bad_driving[,8]
     ) %>% lapply(htmltools::HTML)
     leaflet(states) %>%
@@ -244,7 +246,7 @@ shinyServer(function(input, output) {
                     style = list("font-weight" = "normal", padding = "3px 8px"),
                     textsize = "15px",
                     direction = "auto")) %>%
-      setView(-98.5795, 39.8282, zoom=4)
+      setView(-115, 45.8282, zoom=3.25)
   })
   
   #Table of types of bad drivers
@@ -273,13 +275,14 @@ shinyServer(function(input, output) {
   Alcohol_content_plot <- reactive({
     alcohol_levels <- alcohol_levels %>% select(-c(BAC_over_0.01, Total))
     alcohol_levels <- gather(alcohol_levels, level, amount, 2:4)
-    alcohol_levels <- alcohol_levels %>% mutate(level = gsub("X","",level)) %>% mutate(level = gsub("(.)_(.)", "\\1 - \\2",level)) %>%
+    alcohol_levels <- alcohol_levels %>% mutate(level=substring(level,5)) %>%mutate(level = gsub("(.)_(.)", "\\1 - \\2",level)) %>%
     filter(year == input$yearForAlcGraph)
+    
     alcohol_bargraph <-ggplot(data= alcohol_levels, aes(x= level, y=amount)) +
       expand_limits(y=c(0,30000))+
       geom_bar(stat="identity", fill="tan1") +
       theme_economist()+
-      labs(title = paste("Alcohol content of drivers involved in accidents in", input$yearForAlcGraph), y = "Number of accidents", x = "Alcohol level",
+      labs(title = paste("Alcohol content of drivers involved in accidents in", input$yearForAlcGraph), y = "Number of accidents", x = "Blood alcohol content (%)",
            caption = "BAC = Blood Alcohol Content\n Legally impaired with BAC of 0.08 + in the United States") +
       theme(plot.title = element_text(hjust = 0.5))# date changes with input
     print(alcohol_bargraph)
@@ -318,7 +321,7 @@ shinyServer(function(input, output) {
   })
   output$severityTable <- renderTable({
     severity %>% dplyr::rename("Percent fatal (%)"=percent.fatal,"Fatalities"=fatal,"Percent injuries (%)"=percent.injury,
-                               "Percent property damage (%)"=percent.property.damage)
+                               "Percent property damage (%)"=percent.property.damage, "Property damage ($)"=property.damage,"Total"=total)
   })
   
   #Reactive graph for accident severity
@@ -350,48 +353,49 @@ shinyServer(function(input, output) {
   #Choose which day of the week. Not case sensitive
   TOD_graph <- reactive({
     #Default option
-    if(input$dayOfWeek == "" | tolower(input$dayOfWeek) == "monday") {
-      accidents <- time_of_day$Monday
-      name <- paste("Monday")
-    }
-    if(tolower(input$dayOfWeek) == "tuesday") {
-      accidents <- time_of_day$Tuesday
-      name <- paste("Tuesday")
-      #name <- input$dayOfWeek
-    }
-    if(tolower(input$dayOfWeek) == "wednesday") {
-      accidents <- time_of_day$Wednesday
-     # name <- input$dayOfWeek
-            name <- paste("Wednesday")
-    }
-    if(tolower(input$dayOfWeek) == "thursday") {
-      accidents <- time_of_day$Thursday
-      #name <- input$dayOfWeek
-                  name <- paste("Thursday")
-
-    }
-    if(tolower(input$dayOfWeek) == "friday") {
-      accidents <- time_of_day$Friday
-      #name <- input$dayOfWeek
-      name <- paste("Friday")
-    }
-    if(tolower(input$dayOfWeek) == "saturday") {
-      accidents <- time_of_day$Saturday
-      #name <- input$dayOfWeek
-      name <- paste("Saturday")
-}
-    if(tolower(input$dayOfWeek) == "sunday") {
-      accidents <- time_of_day$Sunday
-      #name <- input$dayOfWeek
-      name <- paste("Sunday")
-    }
-    time_of_day <- time_of_day[-(9:27),]
-    time_frame <- factor(time_of_day$TOD, level = c('12-3AM','3-6AM','6-9AM','9AM-12PM','12-3PM','3-6PM',"6-9PM", '9PM-12AM')) 
-    TOD_line <- ggplot(data= time_of_day, aes(x= time_frame, y= accidents, group=1)) +
+#     if(input$dayOfWeek == "" | tolower(input$dayOfWeek) == "monday") {
+#       accidents <- time_of_day$Monday
+#       name <- paste("Monday")
+#     }
+#     if(tolower(input$dayOfWeek) == "tuesday") {
+#       accidents <- time_of_day$Tuesday
+#       name <- paste("Tuesday")
+#       #name <- input$dayOfWeek
+#     }
+#     if(tolower(input$dayOfWeek) == "wednesday") {
+#       accidents <- time_of_day$Wednesday
+#      # name <- input$dayOfWeek
+#             name <- paste("Wednesday")
+#     }
+#     if(tolower(input$dayOfWeek) == "thursday") {
+#       accidents <- time_of_day$Thursday
+#       #name <- input$dayOfWeek
+#                   name <- paste("Thursday")
+# 
+#     }
+#     if(tolower(input$dayOfWeek) == "friday") {
+#       accidents <- time_of_day$Friday
+#       #name <- input$dayOfWeek
+#       name <- paste("Friday")
+#     }
+#     if(tolower(input$dayOfWeek) == "saturday") {
+#       accidents <- time_of_day$Saturday
+#       #name <- input$dayOfWeek
+#       name <- paste("Saturday")
+# }
+#     if(tolower(input$dayOfWeek) == "sunday") {
+#       accidents <- time_of_day$Sunday
+#       #name <- input$dayOfWeek
+#       name <- paste("Sunday")
+#     }
+#     time_of_day <- time_of_day[-(9:27),]
+    accidents <- time_of_day[,as.integer(input$dayOfWeek)]
+    TOD_order <- factor(time_of_day$TOD, level = c('12-3AM','3-6AM','6-9AM','9AM-12PM','12-3PM','3-6PM',"6-9PM", '9PM-12AM')) 
+    TOD_line <- ggplot(data= time_of_day, aes(x= TOD_order, y= accidents, group=1)) +
       geom_line(color="steelblue4", size = 1.5)+
       theme_economist()+
       geom_point(color = "tan1", size = 3.5) +
-      labs(title = paste("Average Number of Accidents on", name, "in 2017"), x = "Time of Day", y = "Number of accidents") + # accident type changes
+      labs(title = paste("Average Number of Accidents on", names(time_of_day[as.integer(input$dayOfWeek)]), "in 2017"), x = "Time of Day", y = "Number of accidents") + # accident type changes
       theme(plot.title = element_text(hjust = 0.5))
     print(TOD_line)
   })

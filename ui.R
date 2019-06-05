@@ -29,7 +29,7 @@ shinyUI(fluidPage(
              #Introduction page
              tabPanel("Home",
                       fluidRow(column(7,offset = 3,
-                                      h1("Bad Drivers and Insurance statistics in the United States of America 2017", align="center")
+                                      h1("Bad Drivers and Insurance Statistics in the United States of America 2017", align="center")
                                       )),
                       p("On average 3,287 die from a car accident every day, that is a lot of lives lost. Bad driving is a big problem in the United states
                         taking the 3rd place spot on leading causes of death. While we have come a long way, increasing car safety through seatbelts and airbags,
@@ -131,7 +131,8 @@ shinyUI(fluidPage(
                                       ),
                                       tabPanel("Weekly Trends",
                                                sidebarLayout(
-                                                 sidebarPanel(textInput("dayOfWeek", label = h3("Day of the Week"), placeholder = "Monday"),
+                                                 sidebarPanel(selectInput("dayOfWeek", label = h3("Day of the Week"), choices=list("Monday"=3,"Tuesday"=4,"Wednesday"=5,"Thursday"=6,"Friday"=7,
+                                                                                                                                   "Saturday"=8,"Sunday"=2), selected = 3),
                                                  p("The average number of accidents seems to rise from early moorning to 3-6 PM and declines shortly after. Perhaps this is due to rush hour leading
                                                  to a higher concentration of cars on the road")
                                                               ),
